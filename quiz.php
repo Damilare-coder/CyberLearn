@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user_answer = $_POST["answer_$q_id"] ?? '';
         
         // Compare (case-sensitive – change to == if you want case-insensitive)
-        $is_correct = ($user_answer === $q['correct_answer']) ? 1 : 0;
+        $user_answer_normalized = strtoupper(trim($user_answer));
+        $is_correct = ($user_answer_normalized === $q['correct_answer']) ? 1 : 0;
 
         $stmt = $conn->prepare("
             INSERT INTO user_answers 
