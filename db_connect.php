@@ -5,7 +5,7 @@
 $host = 'localhost';
 $dbname = 'cyber_db';
 $username = 'root';
-$password = '';  // Your MariaDB root password
+$password = '';  
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
@@ -13,6 +13,4 @@ try {
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
-?>
-
 ?>
