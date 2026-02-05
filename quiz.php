@@ -33,6 +33,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$user_id, $q_id, $user_answer, $is_correct]);
     }
 
+    // After the foreach loop that saves answers
+
+    $total = count($questions);
+    $correct = 0;
+        foreach ($questions as $q) {
+            $q_id = $q['id'];
+            // Check latest answer for this question
+            $stmt2 = $conn->prepare("SELECT is_correct FROM user_answers WHERE user_id = ? AND question_id = ? ORDER BY submitted_at DESC LIMIT 1");
+            $stmt2->execute([$user_id, $q_id]);
+            $ans = $stmt2->fetch(PDO::FETCH_ASSOC);
+                if ($ans && $ans['is_correct']) $correct++;
+        }   
+
+    $percentage = $total > 0 ? round(($correct / $total) * 100, 1) : 0;
+
+    // Mark lesson as completed
+    $stmt = $conn->prepare("INSERT IGNORE INTO user_lesson_progress (user_id, lesson_id) VALUES (?, ?)");
+    $stmt->execute([$user_id, $lesson_id]);
+
+    // Save quiz score
+    $stmt = $conn->prepare("INSERT INTO user_quiz_scores (user_id, lesson_id, score, total, percentage) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$user_id, $lesson_id, $correct, $total, $percentage]);
+
+
+
     header("Location: results.php?lesson_id=$lesson_id");
     exit;
 }
@@ -45,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz – Lesson <?= htmlspecialchars($lesson_id) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body class="container mt-5 mb-5">
     <h2 class="mb-4">Quiz for Lesson <?= htmlspecialchars($lesson_id) ?></h2>
