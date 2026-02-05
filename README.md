@@ -5,7 +5,7 @@ A simple PHP web application to teach cybersecurity fundamentals with lessons, q
 ## Technologies Used
 - PHP 8+
 - MariaDB/MySQL (via XAMPP)
-- Bootstrap 5.3 (Cyborg dark theme)
+- Bootstrap 5.3 
 - PDO for secure database access
 
 ## How to Run the Project (for grading)
