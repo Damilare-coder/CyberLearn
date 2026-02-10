@@ -154,7 +154,7 @@ $avg_score = round($stmt->fetchColumn() ?: 0, 1);
                     <div class="card h-100 shadow-sm">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title text-white"><?= htmlspecialchars($lesson['title']) ?></h5>
-                            <p class="card-text text-muted flex-grow-1">
+                            <p class="card-text text-light flex-grow-1">
                                 <?= htmlspecialchars(substr($lesson['content'] ?? 'Learn the fundamentals of this important topic...', 0, 100)) ?>...
                             </p>
                             <div class="mt-auto">
